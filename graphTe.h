@@ -36,9 +36,6 @@ struct
 	RECT rect;
 	uint16 width, height;
 	HANDLE outputHandle;
-	HANDLE inputHandle;
-	DWORD events;
-	INPUT_RECORD inputRecord;
 	HPEN linePen;
 	char title[_CMAX];
 }
@@ -107,9 +104,7 @@ void initHost()
 	SelectObject(host.bufferDC, GetStockObject(DC_PEN));
 	SelectObject(host.bufferDC, GetStockObject(DC_BRUSH));
 	host.outputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	host.inputHandle = GetStdHandle(STD_INPUT_HANDLE);
 	SetBkMode(host.bufferDC, TRANSPARENT);
-	SetConsoleMode(host.inputHandle, ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_PROCESSED_INPUT);
 
 	disableConsoleCursor();
 
@@ -295,7 +290,6 @@ char forceInput()
 {
 	return getch();
 }
-
 
 //disable quick edit mode in conhost for mouse input
 BOOL checKeyLiveInput(WORD keyCode)
