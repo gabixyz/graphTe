@@ -292,7 +292,7 @@ char forceInput()
 }
 
 //disable quick edit mode in conhost for mouse input
-BOOL checKeyLiveInput(WORD keyCode)
+BOOL checkKeyLiveInput(WORD keyCode)
 {
 	return GetAsyncKeyState(keyCode);
 }
