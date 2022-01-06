@@ -201,6 +201,18 @@ void image(int16 x, int16 y, uint16 width, uint16 height, char* filenamePTR)
 	DeleteObject(imageBitmap);
 }
 
+void transparentImage(int16 x, int16 y, uint16 width, uint16 height, char* filenamePTR, color transparentColor)
+{
+	char filename[_CMAX];
+	strcpy(filename, filenamePTR); 
+	HBITMAP imageBitmap = LoadImageA(NULL, filename, IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+	SelectObject(host.imageDC, imageBitmap);
+
+	TransparentBlt(host.bufferDC, x, y, width, height, host.imageDC, 0, 0, width, height, RGB(transparentColor.red, transparentColor.green, transparentColor.blue));
+
+	DeleteObject(imageBitmap);
+}
+
 void textRect(int16 x, int16 y, uint16 width, uint16 height, char* textPTR, color fillColor)
 {
 	char text[_CMAX];
