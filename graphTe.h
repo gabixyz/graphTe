@@ -19,13 +19,12 @@ long double map(long double x, long double inMin, long double inMax, long double
 typedef struct
 {
 	uint16 red, green, blue;
-	BOOL alpha;
 }
 color;
 
 color rgb(uint16 red, uint16 green, uint16 blue)
 {
-	return (color){red, green, blue, TRUE};
+	return (color){red, green, blue};
 }
 
 struct
@@ -136,24 +135,20 @@ void moveCursor(uint16 x, uint16 y)
 
 void pixel(int16 x, int16 y, color fillColor)
 {
-	if(fillColor.alpha)
-		SetPixelV(host.bufferDC, x, y, RGB(fillColor.red, fillColor.green, fillColor.blue));
+	SetPixelV(host.bufferDC, x, y, RGB(fillColor.red, fillColor.green, fillColor.blue));
 }
 
 void rect(int16 x, int16 y, uint16 width, uint16 height, color fillColor)
 {
-	if(fillColor.alpha)
-	{
-		RECT frame;
+	RECT frame;
 
-		frame.left = x;
-		frame.top = y;
-		frame.right = x + width;
-		frame.bottom = y + height;
+	frame.left = x;
+	frame.top = y;
+	frame.right = x + width;
+	frame.bottom = y + height;
 
-		SetDCBrushColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
-		FillRect(host.bufferDC, &frame, GetStockObject(DC_BRUSH));
-	}
+	SetDCBrushColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
+	FillRect(host.bufferDC, &frame, GetStockObject(DC_BRUSH));
 }
 
 void fill(color fillColor)
@@ -163,25 +158,19 @@ void fill(color fillColor)
 
 void line(int16 x1, int16 y1, int16 x2, int16 y2, uint16 width,color fillColor)
 {
-	if(fillColor.alpha)
-	{
-		host.linePen = CreatePen(PS_SOLID, width, RGB(fillColor.red, fillColor.green, fillColor.blue));
-		SelectObject(host.bufferDC, host.linePen);
-		MoveToEx(host.bufferDC, x1, y1, NULL);
-		LineTo(host.bufferDC, x2, y2);
-		DeleteObject(host.linePen);
-		SelectObject(host.bufferDC, GetStockObject(DC_PEN));
-	}
+	host.linePen = CreatePen(PS_SOLID, width, RGB(fillColor.red, fillColor.green, fillColor.blue));
+	SelectObject(host.bufferDC, host.linePen);
+	MoveToEx(host.bufferDC, x1, y1, NULL);
+	LineTo(host.bufferDC, x2, y2);
+	DeleteObject(host.linePen);
+	SelectObject(host.bufferDC, GetStockObject(DC_PEN));
 }
 	
 void ellipse(int16 x, int16 y, uint16 width, uint16 height, color fillColor)
 {
-	if(fillColor.alpha)
-	{
-		SetDCPenColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
-		SetDCBrushColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
-		Ellipse(host.bufferDC, x, y, x + width, y + height);
-	}
+	SetDCPenColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
+	SetDCBrushColor(host.bufferDC, RGB(fillColor.red, fillColor.green, fillColor.blue));
+	Ellipse(host.bufferDC, x, y, x + width, y + height);
 }
 
 void circle(int16 x, int16 y, uint16 radius, color fillColor)
